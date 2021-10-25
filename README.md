@@ -26,4 +26,4 @@ To build a path to net zero. A mechanism for corrective action that sets us on p
 
 ## What we learned
 
-## What's next for Earth.Data
+## What's next for net.zero
