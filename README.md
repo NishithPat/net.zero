@@ -18,9 +18,12 @@ We rise to the challenge of building a moral, decentralised and data centric gre
 To build a path to net zero. A mechanism for corrective action that sets us on path to Green economy. 
 
 ## Objective:
-1  Provide unbiased disclosure  to public/investors/ institutions.
-2  Provide an immutable trail of evidence on pollution triggers.
-3  Use the data to drive a net.zero mechanism. United Nations Sustainable Development Goal 13, Take urgent action to combat climate change and its impacts*
+
+Provide unbiased disclosure  to public/investors/ institutions.
+
+Provide an immutable trail of evidence on pollution triggers.
+
+Use the data to drive a net.zero mechanism. United Nations Sustainable Development Goal 13, Take urgent action to combat climate change and its impacts*
 
 The challenged is to do this in the most cost efficient, decentralised and impactful way(UX). 
 
