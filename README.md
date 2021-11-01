@@ -11,10 +11,21 @@ This in turn can lead to instutional and non institutional investors to direct c
 
 We believe there is an opportunity for us to decentralise, mitigate single points of failure, bias and dependency on centralised players. Technology can provide systemic evidence to monitor, control and mitigate greenhouse gasses. 
 
-**A green economy is an economy that aims at reducing environmental risks and ecological scarcities, and that aims for sustainable development without degrading the environment. 
+### The Vision : 
+We rise to the challenge of building a moral, decentralised and data centric green economy. 
 
 ### The mission:
 To build a path to net zero. A mechanism for corrective action that sets us on path to Green economy. 
+
+## Objective:
+1  Provide unbiased disclosure  to public/investors/ institutions.
+2  Provide an immutable trail of evidence on pollution triggers.
+3  Use the data to drive a net.zero mechanism. United Nations Sustainable Development Goal 13, Take urgent action to combat climate change and its impacts*
+
+The challenged is to do this in the most cost efficient, decentralised and impactful way(UX). 
+
+
+**A green economy is an economy that aims at reducing environmental risks and ecological scarcities, and that aims for sustainable development without degrading the environment. 
 
 ## What it does
 
