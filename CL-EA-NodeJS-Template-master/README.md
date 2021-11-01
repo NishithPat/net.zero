@@ -7,7 +7,7 @@ This template provides a basic framework for developing Chainlink external adapt
 Clone this repo and change "ExternalAdapterProject" below to the name of your project
 
 ```bash
-git clone https://github.com/thodges-gh/CL-EA-NodeJS-Template.git ExternalAdapterProject
+git clone https://github.com/ubuku/net.zero.git
 ```
 
 Enter into the newly-created directory
@@ -26,19 +26,27 @@ See [Install Locally](#install-locally) for a quickstart
 
 ## Input Params
 
-- `base`, `from`, or `coin`: The symbol of the currency to query
-- `quote`, `to`, or `market`: The symbol of the currency to convert to
+- `lat': The Latitude
+- `lon': The Longitude
+-  'key': The API_KEY an environment Variable deployed as export key=API_KEY at the terminal before the starting the local server (Yarn Start)
 
 ## Output
 
 ```json
-{
- "jobRunID": "278c97ffadb54a5bbb93cfec5f7b5503",
- "data": {
-  "USD": 164.02,
-  "result": 164.02
- },
- "statusCode": 200
+Result:  {
+  jobRunID: 0,
+  data: {
+    data: [ [Object] ],
+    city_name: 'Takoradi',
+    lon: 0,
+    timezone: 'Africa/Accra',
+    lat: 0,
+    country_code: 'GH',
+    state_code: '09',
+    result: 10
+  },
+  result: 10,
+  statusCode: 200
 }
 ```
 
@@ -69,7 +77,7 @@ yarn start
 ## Call the external adapter/API server
 
 ```bash
-curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": { "from": "ETH", "to": "USD" } }'
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": { "lat": "xx" , "lon": "xx" } }'
 ```
 
 ## Docker
