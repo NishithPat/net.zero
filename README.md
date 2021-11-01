@@ -19,11 +19,9 @@ To build a path to net zero. A mechanism for corrective action that sets us on p
 
 ## Objective:
 
-Provide unbiased disclosure  to public/investors/ institutions.
-
-Provide an immutable trail of evidence on pollution triggers.
-
-Use the data to drive a net.zero mechanism. United Nations Sustainable Development Goal 13, Take urgent action to combat climate change and its impacts*
+- Provide unbiased disclosure  to public/investors/ institutions.
+- Provide an immutable trail of evidence on pollution triggers.
+- Use the data to drive a net.zero mechanism. United Nations Sustainable Development Goal 13, Take urgent action to combat climate change and its impacts*
 
 The challenged is to do this in the most cost efficient, decentralised and impactful way(UX). 
 
