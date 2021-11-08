@@ -2,6 +2,7 @@
 pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "./IAqiDatabase.sol";
 
 /**
  * Request testnet LINK and ETH here: https://faucets.chain.link/
@@ -16,11 +17,12 @@ contract APIConsumer is ChainlinkClient {
     using Chainlink for Chainlink.Request;
   
     uint256 public requestedAqi;
-    uint256 [] aqiArray;
     
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
+    
+    address private dbaddr = 0x009AaAa065A9457B0E6d2FFA2Fc38a0268915F4F;
     
     /**
      * Network: Kovan
@@ -64,33 +66,17 @@ contract APIConsumer is ChainlinkClient {
     function fulfill(bytes32 _requestId, uint256 _aqi) public recordChainlinkFulfillment(_requestId)
     {
         requestedAqi = _aqi;
-        addAqiToDb(_aqi);
+        IAqiDatabase(dbaddr).addAqiToDb(_aqi);
     }
     
-    // TODO: outsource the database functions to another contract
-    function addAqiToDb(uint256 _aqi) internal {
-        aqiArray.push(_aqi);
+    function getAqiDbLengthWrapper(address _addr) public view returns (uint256) {
+        return IAqiDatabase(_addr).getAqiDbLength();
     }
     
-    function getAqiFromDbByIndex(uint _index) public view returns (uint256) {
-        return aqiArray[_index];
+    function addAqiToDbWrapper(address _addr, uint256 _aqi) public { 
+        IAqiDatabase(_addr).addAqiToDb(_aqi);
     }
     
-    function getLastAqiFromDb() public view returns (uint256) {
-        return aqiArray[getAqiDbLength() - 1];
-    }
-    
-    function getAqiDbLength() public view returns (uint256) {
-        return aqiArray.length;
-    }
-    
-    function fillAqiDbWithDummyValues() public {
-        for (uint256 val = 1; val < 6; val++) {
-            aqiArray.push(val);
-        }
-    }
-    
-    
-
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
 }
+
