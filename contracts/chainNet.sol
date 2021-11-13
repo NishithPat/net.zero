@@ -11,7 +11,7 @@ contract NFTContract is ERC1155, Ownable {
     uint256 public constant TriggerPoint = 0;
     uint256 public constant GreenTax = 1;
 
-   constructor() ERC1155("") {
+   constructor() ERC1155("https://vpwc0bspea0u.usemoralis.com/{id}.json") {
        _mint(msg.sender, TriggerPoint, 1,"");
        _mint(msg.sender, GreenTax, 2,"");
    }
