@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
+import uuid from 'react-uuid';
 import DummyContractForSophia from "./contracts/DummyContractForSophia.json";
 
 import "./App.css";
@@ -14,6 +15,8 @@ function App() {
   const [aqi, setAQI] = useState("");
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
+
+  const [aqiArray, setAqiArray] = useState(undefined);
 
   const connectToWallet = async () => {
     try {
@@ -39,7 +42,7 @@ function App() {
       setContract(instance);
       setConnected(true);
 
-      setEventListener(instance);
+      setEventListener(instance, accountsInstance);
 
       await listenMMAccount(web3Instance);
 
@@ -93,14 +96,15 @@ function App() {
     });
   }
 
-  const setEventListener = (contractInstance) => {
+  const setEventListener = (contractInstance, _accounts) => {
     console.log(contractInstance._address, "from event listener");
-    contractInstance.events.requestFulfilled()
+    contractInstance.events.requestFulfilled({ filter: { to: _accounts[0] } })
       .on("data", function (event) {
-        let aqiLevel = event.returnValues;
-        console.log(aqiLevel);
-        setAQI(aqiLevel.aqi);
-        alert(`the aqi value of the requested location is ${aqiLevel.aqi}`)
+        let data = event.returnValues;
+
+        console.log(data);
+        //setAQI(aqiLevel.aqi);
+        alert(`the aqi value of the requested location is ${data.aqi}`)
       })
   }
 
@@ -134,6 +138,23 @@ function App() {
     setLat("");
   }
 
+  const gettingPastEvents = () => {
+
+    const returnValuesFromPastEvents = [];
+    contract.getPastEvents("requestFulfilled", { fromBlock: 1, filter: { to: accounts[0] } })
+      .then(function (events) {
+        //console.log(events);
+        events.forEach(event => {
+          returnValuesFromPastEvents.push({
+            aqi: event.returnValues.aqi
+          })
+        })
+        console.log(returnValuesFromPastEvents);
+        setAqiArray(returnValuesFromPastEvents);
+      });
+
+  }
+
   // async function chainchange(web3Obj) {
   //   window.ethereum.on("chainChanged", async () => {
   //     const networkId = await web3Obj.eth.net.getId();
@@ -158,10 +179,10 @@ function App() {
           {!connected && <button onClick={connectToWallet}>Connect</button>}
           <p>{connected && <b>address of the deployed contract: {contract._address}</b>}</p>
         </div>
-        {connected && <div>
-          {/*<button onClick={fetchAQIValue}>AQI value</button>*/}
+        {/*connected && <div>
+          {<button onClick={fetchAQIValue}>AQI value</button>}
           <p>aqi value = {aqi}</p>
-        </div>}
+        </div>*/}
         {connected && <div>
           <form onSubmit={RequestFunction}>
             <label htmlFor="lattitude">Lattitude</label>
@@ -172,6 +193,18 @@ function App() {
           </form>
         </div>}
         <b>{loading && "...loading"}</b>
+        {connected && <div>
+          <button onClick={gettingPastEvents}>Get Past Events</button>
+          <div>
+            {aqiArray && aqiArray.map(arr => {
+              return (
+                <div key={uuid()}>
+                  aqi level = {arr.aqi}
+                </div>
+              )
+            })}
+          </div>
+        </div>}
       </div>
     </>
   )
