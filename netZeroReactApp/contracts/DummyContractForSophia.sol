@@ -6,8 +6,6 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 contract DummyContractForSophia is ChainlinkClient {
     using Chainlink for Chainlink.Request;
 
-    uint256 public aqiValue;
-
     address private oracle;
     bytes32 private jobId;
     uint256 private fee;
@@ -15,7 +13,9 @@ contract DummyContractForSophia is ChainlinkClient {
     uint256 public immutable interval;
     uint256 public lastTimeStamp;
 
-    event requestFulfilled(uint256 aqi);
+    mapping(bytes32 => address) public toAddresses;
+
+    event requestFulfilled(address indexed to, uint256 aqi);
 
     constructor() {
         setPublicChainlinkToken();
@@ -40,7 +40,8 @@ contract DummyContractForSophia is ChainlinkClient {
         request.add("lon", _lon);
 
         // Sends the request
-        return sendChainlinkRequestTo(oracle, request, fee);
+        requestId = sendChainlinkRequestTo(oracle, request, fee);
+        toAddresses[requestId] = msg.sender;
     }
 
     /**
@@ -50,8 +51,7 @@ contract DummyContractForSophia is ChainlinkClient {
         public
         recordChainlinkFulfillment(_requestId)
     {
-        aqiValue = _aqiValue;
-        emit requestFulfilled(_aqiValue);
+        emit requestFulfilled(toAddresses[_requestId], _aqiValue);
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
