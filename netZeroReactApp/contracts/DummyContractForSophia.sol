@@ -10,48 +10,77 @@ contract DummyContractForSophia is ChainlinkClient {
     bytes32 private jobId;
     uint256 private fee;
 
-    uint256 public immutable interval;
-    uint256 public lastTimeStamp;
-
     mapping(bytes32 => address) public toAddresses;
-
-    event requestFulfilled(address indexed to, uint256 aqi);
+    mapping(bytes32 => string) public toLat;
+    mapping(bytes32 => string) public toLon;
 
     constructor() {
         setPublicChainlinkToken();
-        oracle = 0x5221E61ccb134Af38a7360c23a29A2345cEb3027;
-        jobId = "70e8c0b52fdc45ecabbfc816e73aba10";
-        fee = 0; // (Varies by network and job) //zero in this instance
-        interval = 1 minutes;
-        lastTimeStamp = block.timestamp;
+        oracle = 0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10;
+        jobId = "c7ef2e55f68e45b4b98219b8f2854189";
+        fee = 0;
     }
 
-    function requestVolumeData(string memory _lat, string memory _lon)
+    function requestMultipleParameters(string memory _lat, string memory _lon)
         public
         returns (bytes32 requestId)
     {
-        Chainlink.Request memory request = buildChainlinkRequest(
+        Chainlink.Request memory req = buildChainlinkRequest(
             jobId,
             address(this),
-            this.fulfill.selector
+            this.fulfillMultipleParameters.selector
         );
 
-        request.add("lat", _lat);
-        request.add("lon", _lon);
+        req.add("lat", _lat);
+        req.add("lon", _lon);
 
         // Sends the request
-        requestId = sendChainlinkRequestTo(oracle, request, fee);
+        requestId = sendChainlinkRequestTo(oracle, req, fee);
         toAddresses[requestId] = msg.sender;
+        toLat[requestId] = _lat;
+        toLon[requestId] = _lon;
     }
 
-    /**
-     * Receive the response in the form of uint256
-     */
-    function fulfill(bytes32 _requestId, uint256 _aqiValue)
-        public
-        recordChainlinkFulfillment(_requestId)
-    {
-        emit requestFulfilled(toAddresses[_requestId], _aqiValue);
+    event RequestMultipleFulfilled(
+        bytes32 requestId_,
+        uint256 aqi_,
+        uint256 no2_,
+        uint256 o3_,
+        uint256 pm10_,
+        uint256 pm2_5_,
+        address indexed requester_
+    );
+
+    event coordinatesAndAddress(
+        bytes32 requestId_,
+        string lat_,
+        string lon_,
+        address indexed requester_
+    );
+
+    function fulfillMultipleParameters(
+        bytes32 requestId,
+        uint256 aqi_response,
+        uint256 no2_response,
+        uint256 o3_response,
+        uint256 pm10_response,
+        uint256 pm2_5_response
+    ) public recordChainlinkFulfillment(requestId) {
+        emit RequestMultipleFulfilled(
+            requestId,
+            aqi_response,
+            no2_response,
+            o3_response,
+            pm10_response,
+            pm2_5_response,
+            toAddresses[requestId]
+        );
+        emit coordinatesAndAddress(
+            requestId,
+            toLat[requestId],
+            toLon[requestId],
+            toAddresses[requestId]
+        );
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract

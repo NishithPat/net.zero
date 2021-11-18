@@ -17,6 +17,8 @@ function App() {
   const [lon, setLon] = useState("");
 
   const [aqiArray, setAqiArray] = useState(undefined);
+  const [pollutionData, setPollutionData] = useState(undefined);
+  const [coordinateData, setCoordinateData] = useState(undefined);
 
   const connectToWallet = async () => {
     try {
@@ -98,13 +100,13 @@ function App() {
 
   const setEventListener = (contractInstance, _accounts) => {
     console.log(contractInstance._address, "from event listener");
-    contractInstance.events.requestFulfilled({ filter: { to: _accounts[0] } })
+    contractInstance.events.RequestMultipleFulfilled({ filter: { requester_: _accounts[0] } })
       .on("data", function (event) {
         let data = event.returnValues;
 
         console.log(data);
         //setAQI(aqiLevel.aqi);
-        alert(`the aqi value of the requested location is ${data.aqi}`)
+        alert(`the aqi value of the requested location is ${data.aqi_}`)
       })
   }
 
@@ -128,7 +130,7 @@ function App() {
     event.preventDefault();
     try {
       setLoading(true);
-      await contract.methods.requestVolumeData(lat, lon).send({ from: accounts[0] });
+      await contract.methods.requestMultipleParameters(lat, lon).send({ from: accounts[0] });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -140,19 +142,50 @@ function App() {
 
   const gettingPastEvents = () => {
 
-    const returnValuesFromPastEvents = [];
-    contract.getPastEvents("requestFulfilled", { fromBlock: 1, filter: { to: accounts[0] } })
+    let returnPollutionValuesFromPastEvents = [];
+    contract.getPastEvents("RequestMultipleFulfilled", { fromBlock: 1, filter: { requester_: accounts[0] } })
       .then(function (events) {
         //console.log(events);
         events.forEach(event => {
-          returnValuesFromPastEvents.push({
-            aqi: event.returnValues.aqi
+          returnPollutionValuesFromPastEvents.push({
+            aqi: event.returnValues.aqi_,
+            no2: event.returnValues.no2_ / 10 ** 8,
+            o3: event.returnValues.o3_ / 10 ** 8,
+            pm10: event.returnValues.pm10_ / 10 ** 8,
+            pm2_5: event.returnValues.pm2_5_ / 10 ** 8
           })
         })
-        console.log(returnValuesFromPastEvents);
-        setAqiArray(returnValuesFromPastEvents);
+        console.log(returnPollutionValuesFromPastEvents);
+        setPollutionData(returnPollutionValuesFromPastEvents)
       });
 
+    const returnCoordinateValuesFromPastEvents = [];
+    contract.getPastEvents("coordinatesAndAddress", { fromBlock: 1, filter: { requester_: accounts[0] } })
+      .then(function (events) {
+        //console.log(events);
+        events.forEach(event => {
+          returnCoordinateValuesFromPastEvents.push({
+            lat: event.returnValues.lat_,
+            lon: event.returnValues.lon_
+          })
+        })
+        console.log(returnCoordinateValuesFromPastEvents);
+        setCoordinateData(returnCoordinateValuesFromPastEvents);
+      });
+
+  }
+
+  const consolefunc = () => {
+    let coordinates = coordinateData;
+    let pollutant = pollutionData;
+
+    for (let i = 0; i < pollutant.length; i++) {
+      pollutant[i].lat = coordinates[i].lat;
+      pollutant[i].lon = coordinates[i].lon;
+    }
+
+    console.log(pollutant);
+    setAqiArray(pollutant);
   }
 
   // async function chainchange(web3Obj) {
@@ -193,13 +226,21 @@ function App() {
           </form>
         </div>}
         <b>{loading && "...loading"}</b>
+
         {connected && <div>
           <button onClick={gettingPastEvents}>Get Past Events</button>
+          <button onClick={consolefunc}>Show data</button>
           <div>
             {aqiArray && aqiArray.map(arr => {
               return (
                 <div key={uuid()}>
-                  aqi level = {arr.aqi}
+                  lat = {arr.lat};
+                  lon = {arr.lon};
+                  aqi level = {arr.aqi};
+                  no2 level = {arr.no2};
+                  o3 level = {arr.o3};
+                  pm10 level = {arr.pm10};
+                  pm2_5 level = {arr.pm2_5}
                 </div>
               )
             })}
