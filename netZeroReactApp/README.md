@@ -1,4 +1,4 @@
-##Instructions
+## Instructions
 
 After cloning the repo, rename .envExample to .env and .secretExample to .secret.
 
