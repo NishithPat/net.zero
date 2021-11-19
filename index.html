@@ -11,11 +11,6 @@
     <button id="btn-logout">Logout</button>
     <button id="btn-get-stats">Refresh Stats</button>
 
-    <div>
-      <input type="search" id="mySearch" name="q">
-      <button>Search</button>
-    </div>
-
     <!-- stats will go here -->
     <ul id="aqi-stats"></ul>
 
@@ -43,31 +38,51 @@
       document.getElementById("btn-login").onclick = login;
       document.getElementById("btn-logout").onclick = logOut;
       document.getElementById("btn-get-stats").onclick = getStats;
-      document.getElementById("mySearch").onclick = getStats;
 
       function getStats() {
         const user = Moralis.User.current();
         if (user) {
-          getAqi("London");
+            getEventsByUserLatLon(user, "50", "50"); // make available throught GUI
         }
       }
 
-      async function getAqi(location) {
+      async function getEventsByUserLatLon(user, lat, lon) {
         // create query
-        const query = new Moralis.Query("TestEvents");
-        query.equalTo("name", mySearch.value);
+        const locQuery = new Moralis.Query("LocationEventTable"); 
+        const aqiQuery = new Moralis.Query("DataEventTable");
+        
+        locQuery.equalTo("requester_", user.get("ethAddress"));
+        locQuery.equalTo("lat_", lat);
+        locQuery.equalTo("lon_", lon);
+        aqiQuery.matchesKeyInQuery("transaction_hash", "transaction_hash", locQuery)
 
-        // run query
-        const results = await query.find();
-        renderAqiStats(results);
+        // map location events to aqi events by sorting them by tx hash (risky but ok for now)
+        locQuery.ascending("transaction_hash");
+        aqiQuery.ascending("transaction_hash");
+
+        // run query 
+        const locResults = await locQuery.find();
+        const aqiResults = await aqiQuery.find();
+
+        renderStats(locResults, aqiResults);
       }
 
-      function renderAqiStats(results) {
-        for (let i = 0; i < results.length; i++) {
-          const object = results[i];
-          console.log("Object: ", i);
-          console.log("Timestamp: ", results[i].get("block_timestamp"));
-          console.log("Aqi Value:", results[i].get("amount"));
+      function renderStats(locResults, aqiResults) {
+        // assumably locResults and aqiResults are of same length 
+        // and are sorted by tx hash for simplyfied key-value matching
+        if (locResults.length != aqiResults.length) {
+            console.error("Event results do not match and can not be mapped by regular sort structure");
+        } 
+        else 
+        {
+          for (let i = 0; i < locResults.length; i++) { 
+            console.log("Object: ", i);
+            console.log("Timestamp: ", locResults[i].get("block_timestamp"));
+            console.log("Lat:", locResults[i].get("lat_"));
+            console.log("Lon:", locResults[i].get("lon_"));
+            console.log("Aqi:", aqiResults[i].get("aqi_"));
+            console.log("PM10:", aqiResults[i].get("pm10_"));
+          }
         }
       }
 
