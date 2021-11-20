@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Web3 from "web3";
 import uuid from 'react-uuid';
 import DummyContractForSophia from "./contracts/DummyContractForSophia.json";
@@ -12,13 +12,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [connected, setConnected] = useState(false);
 
-  const [aqi, setAQI] = useState("");
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
 
-  const [aqiArray, setAqiArray] = useState(undefined);
-  const [pollutionData, setPollutionData] = useState(undefined);
-  const [coordinateData, setCoordinateData] = useState(undefined);
+  const [pollutionDataArray, setPollutionDataArray] = useState(undefined);
 
   const connectToWallet = async () => {
     try {
@@ -95,6 +92,8 @@ function App() {
       if (accountsInstance.length === 0) {
         setConnected(false);
       }
+
+      setPollutionDataArray(undefined);
     });
   }
 
@@ -105,16 +104,9 @@ function App() {
         let data = event.returnValues;
 
         console.log(data);
-        //setAQI(aqiLevel.aqi);
         alert(`the aqi value of the requested location is ${data.aqi_}`)
       })
   }
-
-  // const fetchAQIValue = async () => {
-  //   const returnedAQIValue = await contract.methods.aqiValue().call();
-  //   console.log(returnedAQIValue);
-  //   setAQI(returnedAQIValue);
-  // }
 
   const lattitudeFunction = async (event) => {
     console.log(event.target.value);
@@ -141,28 +133,10 @@ function App() {
   }
 
   const gettingPastEvents = () => {
-
-    let returnPollutionValuesFromPastEvents = [];
-    contract.getPastEvents("RequestMultipleFulfilled", { fromBlock: 1, filter: { requester_: accounts[0] } })
-      .then(function (events) {
-        //console.log(events);
-        events.forEach(event => {
-          returnPollutionValuesFromPastEvents.push({
-            aqi: event.returnValues.aqi_,
-            no2: event.returnValues.no2_ / 10 ** 8,
-            o3: event.returnValues.o3_ / 10 ** 8,
-            pm10: event.returnValues.pm10_ / 10 ** 8,
-            pm2_5: event.returnValues.pm2_5_ / 10 ** 8
-          })
-        })
-        console.log(returnPollutionValuesFromPastEvents);
-        setPollutionData(returnPollutionValuesFromPastEvents)
-      });
-
     const returnCoordinateValuesFromPastEvents = [];
     contract.getPastEvents("coordinatesAndAddress", { fromBlock: 1, filter: { requester_: accounts[0] } })
       .then(function (events) {
-        //console.log(events);
+
         events.forEach(event => {
           returnCoordinateValuesFromPastEvents.push({
             lat: event.returnValues.lat_,
@@ -170,22 +144,79 @@ function App() {
           })
         })
         console.log(returnCoordinateValuesFromPastEvents);
-        setCoordinateData(returnCoordinateValuesFromPastEvents);
+
+        let returnPollutionValuesFromPastEvents = [];
+        contract.getPastEvents("RequestMultipleFulfilled", { fromBlock: 1, filter: { requester_: accounts[0] } })
+          .then(function (events) {
+
+            events.forEach(event => {
+              returnPollutionValuesFromPastEvents.push({
+                aqi: event.returnValues.aqi_,
+                no2: event.returnValues.no2_ / 10 ** 8,
+                o3: event.returnValues.o3_ / 10 ** 8,
+                pm10: event.returnValues.pm10_ / 10 ** 8,
+                pm2_5: event.returnValues.pm2_5_ / 10 ** 8
+              })
+            })
+            console.log(returnPollutionValuesFromPastEvents);
+
+            for (let i = 0; i < returnCoordinateValuesFromPastEvents.length; i++) {
+              returnCoordinateValuesFromPastEvents[i].aqi = returnPollutionValuesFromPastEvents[i].aqi;
+              returnCoordinateValuesFromPastEvents[i].no2 = returnPollutionValuesFromPastEvents[i].no2;
+              returnCoordinateValuesFromPastEvents[i].o3 = returnPollutionValuesFromPastEvents[i].o3;
+              returnCoordinateValuesFromPastEvents[i].pm10 = returnPollutionValuesFromPastEvents[i].pm10;
+              returnCoordinateValuesFromPastEvents[i].pm2_5 = returnPollutionValuesFromPastEvents[i].pm2_5;
+            }
+
+            setPollutionDataArray(returnCoordinateValuesFromPastEvents);
+          });
       });
 
   }
 
-  const consolefunc = () => {
-    let coordinates = coordinateData;
-    let pollutant = pollutionData;
+  const gettingPastDayEvents = async () => {
+    const latestBlock = await web3.eth.getBlockNumber();
+    console.log(latestBlock);
 
-    for (let i = 0; i < pollutant.length; i++) {
-      pollutant[i].lat = coordinates[i].lat;
-      pollutant[i].lon = coordinates[i].lon;
-    }
+    const returnCoordinateValuesFromPastEvents = [];
+    contract.getPastEvents("coordinatesAndAddress", { fromBlock: latestBlock - 6000, toBlock: latestBlock, filter: { requester_: accounts[0] } })
+      .then(function (events) {
 
-    console.log(pollutant);
-    setAqiArray(pollutant);
+        events.forEach(event => {
+          returnCoordinateValuesFromPastEvents.push({
+            lat: event.returnValues.lat_,
+            lon: event.returnValues.lon_
+          })
+        })
+        console.log(returnCoordinateValuesFromPastEvents);
+
+        let returnPollutionValuesFromPastEvents = [];
+        contract.getPastEvents("RequestMultipleFulfilled", { fromBlock: latestBlock - 6000, toBlock: latestBlock, filter: { requester_: accounts[0] } })
+          .then(function (events) {
+
+            events.forEach(event => {
+              returnPollutionValuesFromPastEvents.push({
+                aqi: event.returnValues.aqi_,
+                no2: event.returnValues.no2_ / 10 ** 8,
+                o3: event.returnValues.o3_ / 10 ** 8,
+                pm10: event.returnValues.pm10_ / 10 ** 8,
+                pm2_5: event.returnValues.pm2_5_ / 10 ** 8
+              })
+            })
+            console.log(returnPollutionValuesFromPastEvents);
+
+            for (let i = 0; i < returnCoordinateValuesFromPastEvents.length; i++) {
+              returnCoordinateValuesFromPastEvents[i].aqi = returnPollutionValuesFromPastEvents[i].aqi;
+              returnCoordinateValuesFromPastEvents[i].no2 = returnPollutionValuesFromPastEvents[i].no2;
+              returnCoordinateValuesFromPastEvents[i].o3 = returnPollutionValuesFromPastEvents[i].o3;
+              returnCoordinateValuesFromPastEvents[i].pm10 = returnPollutionValuesFromPastEvents[i].pm10;
+              returnCoordinateValuesFromPastEvents[i].pm2_5 = returnPollutionValuesFromPastEvents[i].pm2_5;
+            }
+
+            setPollutionDataArray(returnCoordinateValuesFromPastEvents);
+          });
+      });
+
   }
 
   // async function chainchange(web3Obj) {
@@ -212,10 +243,6 @@ function App() {
           {!connected && <button onClick={connectToWallet}>Connect</button>}
           <p>{connected && <b>address of the deployed contract: {contract._address}</b>}</p>
         </div>
-        {/*connected && <div>
-          {<button onClick={fetchAQIValue}>AQI value</button>}
-          <p>aqi value = {aqi}</p>
-        </div>*/}
         {connected && <div>
           <form onSubmit={RequestFunction}>
             <label htmlFor="lattitude">Lattitude</label>
@@ -226,12 +253,13 @@ function App() {
           </form>
         </div>}
         <b>{loading && "...loading"}</b>
-
+        <br />
         {connected && <div>
-          <button onClick={gettingPastEvents}>Get Past Events</button>
-          <button onClick={consolefunc}>Show data</button>
+          <button onClick={gettingPastEvents}>Get All Past Events</button>
+          <button onClick={gettingPastDayEvents}>Get Events(last 24 hours)</button>
           <div>
-            {aqiArray && aqiArray.map(arr => {
+            <hr />
+            {pollutionDataArray && pollutionDataArray.map(arr => {
               return (
                 <div key={uuid()}>
                   lat = {arr.lat};
