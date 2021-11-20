@@ -42,48 +42,40 @@
       function getStats() {
         const user = Moralis.User.current();
         if (user) {
-            getEventsByUserLatLon(user, "50", "50"); // make available throught GUI
+          getLocEventsByUserLatLon(user, "50", "50"); // make available throught GUI
         }
       }
 
-      async function getEventsByUserLatLon(user, lat, lon) {
+      async function getLocEventsByUserLatLon(user, lat, lon) {
         // create query
-        const locQuery = new Moralis.Query("LocationEventTable"); 
-        const aqiQuery = new Moralis.Query("DataEventTable");
-        
+        const locQuery = new Moralis.Query("LocationEventTable");         
         locQuery.equalTo("requester_", user.get("ethAddress"));
         locQuery.equalTo("lat_", lat);
         locQuery.equalTo("lon_", lon);
-        aqiQuery.matchesKeyInQuery("transaction_hash", "transaction_hash", locQuery)
-
-        // map location events to aqi events by sorting them by tx hash (risky but ok for now)
-        locQuery.ascending("transaction_hash");
-        aqiQuery.ascending("transaction_hash");
+        locQuery.limit(10); 
+        locQuery.descending("block_timestamp");
 
         // run query 
-        const locResults = await locQuery.find();
-        const aqiResults = await aqiQuery.find();
-
-        renderStats(locResults, aqiResults);
+        const prunedLocResults = await locQuery.find();
+        mapDataEventToLocEvent(prunedLocResults);
       }
 
-      function renderStats(locResults, aqiResults) {
-        // assumably locResults and aqiResults are of same length 
-        // and are sorted by tx hash for simplyfied key-value matching
-        if (locResults.length != aqiResults.length) {
-            console.error("Event results do not match and can not be mapped by regular sort structure");
-        } 
-        else 
-        {
-          for (let i = 0; i < locResults.length; i++) { 
-            console.log("Object: ", i);
-            console.log("Timestamp: ", locResults[i].get("block_timestamp"));
-            console.log("Lat:", locResults[i].get("lat_"));
-            console.log("Lon:", locResults[i].get("lon_"));
-            console.log("Aqi:", aqiResults[i].get("aqi_"));
-            console.log("PM10:", aqiResults[i].get("pm10_"));
-          }
+      async function mapDataEventToLocEvent(locResults) {
+        for (let i = 0; i < locResults.length; i++) { 
+            const txhash_id = locResults[i].get("transaction_hash");
+            const aqiQuery = new Moralis.Query("DataEventTable");
+            aqiQuery.equalTo("transaction_hash", txhash_id)
+            const aqiResult = await aqiQuery.find();
+            renderStats(locResults[i], aqiResult[0]);
         }
+      }
+
+      function renderStats(locResult, aqiResult) {
+            console.log("Timestamp: ", locResult.get("block_timestamp"));
+            console.log("Lat:", locResult.get("lat_"));
+            console.log("Lon:", locResult.get("lon_"));
+            console.log("Aqi:", aqiResult.get("aqi_"));
+            console.log("PM10:", aqiResult.get("pm10_"));
       }
 
       //get stats on page load
