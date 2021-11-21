@@ -1,41 +1,70 @@
-# net.zero
-Immutable disclosure of Sustanability Development Goals: Green House Gases  : Chainlink Hackathon fall 2021
+# Getting Started with Create React App
 
-## Inspiration
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### What is net zero?
-Put simply, net zero refers to the balance between the amount of greenhouse gas produced and the amount removed from the atmosphere. We reach net zero when the amount we add is no more than the amount taken away.
+## Available Scripts
 
-Currently net zero mechanism depends has a central dependency on analytics firms facilitating collection and processing of Environmental, Social and Governance (ESG) data. In most scenarios data is consolidated using a questionnaire may fail to capture mandatory disclosures. This single point of dependency can lead to bias, innacurate reporting and green washing. Institutions and Individuals may invest direct capital or invest in oranisations that may be unknowingly polluting or supporting unsustainable practices. It is of utmost improtance that investors have access to tranparent information to make an informed decision to support green economy**. It is imperative that organisations have access to accturate information to engage in sustainable practices or corrective actions.
-This in turn can lead to instutional and non institutional investors to direct capital in to unsustainable econony
+In the project directory, you can run:
 
-We believe there is an opportunity for us to decentralise, mitigate single points of failure, bias and dependency on centralised players. Technology can provide systemic evidence to monitor, control and mitigate greenhouse gasses. 
+### `npm start`
 
-### The Vision : 
-We rise to the challenge of building a moral, decentralised and data centric green economy. 
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### The mission:
-To build a path to net zero. A mechanism for corrective action that sets us on path to Green economy. 
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-## Objective:
+### `npm test`
 
-- Provide unbiased disclosure  to public/investors/ institutions.
-- Provide an immutable trail of evidence on pollution triggers.
-- Use the data to drive a net.zero mechanism. United Nations Sustainable Development Goal 13, Take urgent action to combat climate change and its impacts*
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-The challenged is to do this in the most cost efficient, decentralised and impactful way(UX). 
+### `npm run build`
 
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-**A green economy is an economy that aims at reducing environmental risks and ecological scarcities, and that aims for sustainable development without degrading the environment. 
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## What it does
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## How we built it
+### `npm run eject`
 
-## Challenges we ran into
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-## Accomplishments that we're proud of
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## What we learned
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-## What's next for net.zero
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
