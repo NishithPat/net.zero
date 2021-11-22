@@ -16,18 +16,13 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
     uint256 private immutable interval;
     uint256 private lastTimeStamp;
 
+    string[] private latArray;
+    string[] private lonArray;
+    address[] private creatorArray;
+
     mapping(bytes32 => address) public toAddresses;
     mapping(bytes32 => string) public toLat;
     mapping(bytes32 => string) public toLon;
-
-    struct locationData {
-        address createdBy;
-        string lat;
-        string lon;
-        bytes32 IDOfRequest;
-    }
-
-    locationData[] public locationDataArray;
 
     constructor() {
         setPublicChainlinkToken();
@@ -36,6 +31,17 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         fee = 0;
         interval = 10 minutes;
         lastTimeStamp = block.timestamp;
+    }
+
+    //function -> add to array and requestMultipleParameters
+    function addLocationDataAndFetchPollutionData(
+        string memory _lat,
+        string memory _lon
+    ) public {
+        latArray.push(_lat);
+        lonArray.push(_lon);
+        creatorArray.push(msg.sender);
+        requestMultipleParametersFromUser(_lat, _lon, msg.sender);
     }
 
     function checkUpkeep(
@@ -55,13 +61,11 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         bytes calldata /* performData */
     ) external override {
         lastTimeStamp = block.timestamp;
-        counter = counter + 1;
-        requestMultipleParameters();
-    }
 
-    //function -> add to array and requestMultipleParameters
-    function addLocationData(string memory _lat, string memory _lon) public {
-        locationDataArray.push(locationData(msg.sender, _lat, _lon, 0x0));
+        string memory _lat = latArray[counter];
+        string memory _lon = lonArray[counter];
+
+        requestMultipleParameters(_lat, _lon);
     }
 
     function requestMultipleParameters(string memory _lat, string memory _lon)
@@ -79,9 +83,37 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
 
         // Sends the request
         requestId = sendChainlinkRequestTo(oracle, req, fee);
-        toAddresses[requestId] = msg.sender;
+
+        toLat[requestId] = latArray[counter];
+        toLon[requestId] = lonArray[counter];
+        toAddresses[requestId] = creatorArray[counter];
+
+        if (counter >= creatorArray.length) {
+            counter = 0;
+        } else {
+            counter = counter + 1;
+        }
+    }
+
+    function requestMultipleParametersFromUser(
+        string memory _lat,
+        string memory _lon,
+        address _sender
+    ) public returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(
+            jobId,
+            address(this),
+            this.fulfillMultipleParameters.selector
+        );
+
+        req.add("lat", _lat);
+        req.add("lon", _lon);
+
+        // Sends the request
+        requestId = sendChainlinkRequestTo(oracle, req, fee);
         toLat[requestId] = _lat;
         toLon[requestId] = _lon;
+        toAddresses[requestId] = _sender;
     }
 
     event RequestMultipleFulfilled(
