@@ -16,9 +16,9 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
     uint256 private immutable interval;
     uint256 private lastTimeStamp;
 
-    string[] private latArray;
-    string[] private lonArray;
-    address[] private creatorArray;
+    string[] public latArray;
+    string[] public lonArray;
+    address[] public creatorArray;
 
     mapping(bytes32 => address) public toAddresses;
     mapping(bytes32 => string) public toLat;
@@ -29,7 +29,7 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         oracle = 0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10;
         jobId = "c7ef2e55f68e45b4b98219b8f2854189";
         fee = 0;
-        interval = 5 minutes;
+        interval = 1 minutes; //needs to change
         lastTimeStamp = block.timestamp;
     }
 
@@ -62,6 +62,10 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
     ) external override {
         lastTimeStamp = block.timestamp;
 
+        if (counter >= creatorArray.length) {
+            counter = 0;
+        }
+
         string memory _lat = latArray[counter];
         string memory _lon = lonArray[counter];
 
@@ -72,6 +76,13 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         public
         returns (bytes32 requestId)
     {
+        //logic problem in conditional
+        // if (counter >= creatorArray.length) {
+        //     counter = 0;
+        // } else {
+        //     counter = counter + 1;
+        // }
+
         Chainlink.Request memory req = buildChainlinkRequest(
             jobId,
             address(this),
@@ -87,12 +98,6 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         toLat[requestId] = latArray[counter];
         toLon[requestId] = lonArray[counter];
         toAddresses[requestId] = creatorArray[counter];
-
-        if (counter >= creatorArray.length) {
-            counter = 0;
-        } else {
-            counter = counter + 1;
-        }
     }
 
     function requestMultipleParametersFromUser(
@@ -161,6 +166,8 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
 
         //GTAX minted on some condition
         //if(no2 > 200) { mint gtax}
+
+        counter = counter + 1;
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
