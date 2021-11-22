@@ -7,7 +7,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
     using Chainlink for Chainlink.Request;
 
-    uint256 private counter;
+    uint256 public counter;
 
     address private oracle;
     bytes32 private jobId;
@@ -29,7 +29,7 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         oracle = 0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10;
         jobId = "c7ef2e55f68e45b4b98219b8f2854189";
         fee = 0;
-        interval = 10 minutes;
+        interval = 5 minutes;
         lastTimeStamp = block.timestamp;
     }
 

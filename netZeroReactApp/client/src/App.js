@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Web3 from "web3";
 import uuid from 'react-uuid';
 import DummyContractForSophia from "./contracts/DummyContractForSophia.json";
+import PollutionDataContract from "./contracts/PollutionDataContract.json";
 
 import "./App.css";
 
@@ -27,12 +28,12 @@ function App() {
       const accountsInstance = await web3Instance.eth.getAccounts();
 
       const networkId = await web3Instance.eth.net.getId();
-      const deployedNetwork = DummyContractForSophia.networks[networkId];
+      const deployedNetwork = PollutionDataContract.networks[networkId];
 
       console.log("contract address on the network", deployedNetwork.address);
 
       const instance = new web3Instance.eth.Contract(
-        DummyContractForSophia.abi,
+        PollutionDataContract.abi,
         deployedNetwork && deployedNetwork.address,
       );
 
@@ -122,7 +123,21 @@ function App() {
     event.preventDefault();
     try {
       setLoading(true);
-      await contract.methods.requestMultipleParameters(lat, lon).send({ from: accounts[0] });
+      await contract.methods.requestMultipleParametersFromUser(lat, lon, accounts[0]).send({ from: accounts[0] });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+    setLon("");
+    setLat("");
+  }
+
+  const RequestAndTrackFunction = async (event) => {
+    event.preventDefault();
+    try {
+      setLoading(true);
+      await contract.methods.addLocationDataAndFetchPollutionData(lat, lon).send({ from: accounts[0] });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -140,7 +155,8 @@ function App() {
         events.forEach(event => {
           returnCoordinateValuesFromPastEvents.push({
             lat: event.returnValues.lat_,
-            lon: event.returnValues.lon_
+            lon: event.returnValues.lon_,
+            timestamp: new Date(event.returnValues.timestamp_ * 1000)
           })
         })
         console.log(returnCoordinateValuesFromPastEvents);
@@ -185,7 +201,8 @@ function App() {
         events.forEach(event => {
           returnCoordinateValuesFromPastEvents.push({
             lat: event.returnValues.lat_,
-            lon: event.returnValues.lon_
+            lon: event.returnValues.lon_,
+            timestamp: new Date(event.returnValues.timestamp_ * 1000)
           })
         })
         console.log(returnCoordinateValuesFromPastEvents);
@@ -244,12 +261,15 @@ function App() {
           <p>{connected && <b>address of the deployed contract: {contract._address}</b>}</p>
         </div>
         {connected && <div>
+          <label htmlFor="lattitude">Lattitude</label>
+          <input id="lattitude" value={lat} onChange={lattitudeFunction} />
+          <label htmlFor="longitude">Longitude</label>
+          <input id="longitude" value={lon} onChange={longitudeFunction} />
           <form onSubmit={RequestFunction}>
-            <label htmlFor="lattitude">Lattitude</label>
-            <input id="lattitude" value={lat} onChange={lattitudeFunction} />
-            <label htmlFor="longitude">Longitude</label>
-            <input id="longitude" value={lon} onChange={longitudeFunction} />
             <button type="submit">request data</button>
+          </form>
+          <form onSubmit={RequestAndTrackFunction}>
+            <button type="submit">request and track</button>
           </form>
         </div>}
         <b>{loading && "...loading"}</b>
@@ -264,6 +284,7 @@ function App() {
                 <div key={uuid()}>
                   lat = {arr.lat};
                   lon = {arr.lon};
+                  timestamp = {arr.timestamp.toString()};
                   aqi level = {arr.aqi};
                   no2 level = {arr.no2};
                   o3 level = {arr.o3};
