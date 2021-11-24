@@ -248,6 +248,7 @@ function UserComponent() {
     const gettingDataOfALocation = async () => {
         const locationArray = dataArray.filter(ele => ele.lat === lat && ele.lon === lon);
         setLocationData(locationArray);
+        setPollutionDataArray(locationArray);
     }
 
     return (
