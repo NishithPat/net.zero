@@ -1,9 +1,8 @@
 import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label } from 'recharts';
 
-function AQIPlot({ locationData, timestampData }) {
+function AQIPlot({ locationData }) {
     console.log(locationData);
-    console.log(timestampData);
 
     return (
         <LineChart width={400} height={400} data={locationData}>
