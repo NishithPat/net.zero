@@ -74,7 +74,7 @@ export default function MapComponent({ parentCallback }) {
 
   function displayLocation(latitude, longitude) {
     // e.preventDefault();
-    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+    Geocode.setApiKey("AIzaSyCouekgXHz8Yzs4OS2wsGNWBT6lzF3YXu0");
     Geocode.fromLatLng(latitude, longitude).then(
       (response) => {
         let address = response.results[0].formatted_address;

@@ -60,6 +60,10 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
   };
 
   const getDateRangePollution = async () => {
+   
+    if (startDateTimestamp >= endDateTimestamp ){
+      window.alert("Please select a valid time")
+    } else {
    try { fetch(
       `${api.base}air_pollution/history?lat=${
         markers[markers.length - 1].lat
@@ -75,9 +79,10 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
       markers[markers.length - 1].lat,
       markers[markers.length - 1].lng
     );} catch {
-        window.alert("Please elect a location")
+        window.alert("Please pin a location")
     }
   }
+}
 
   // const formatXAxis = (date).forEach (date => {
   //   return moment(date).format('DD/MM/YY HH:mm')})
@@ -179,10 +184,10 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                   domain={["dataMin", "dataMax"]}
                   type="number"
                 >
-                <Label value="Timestamp" offset={0} position="insideBottom" />
+                <Label value="Timestamp" offset={-3} position="insideBottom"  fill="#c4c1c1" />
                 </XAxis>
                 <YAxis >
-                <Label value="NO2" offset={10} angle={-90} position="insideLeft" />
+                <Label value="CO" offset={10} angle={-90} position="insideLeft"  fill="#c4c1c1" />
                   </YAxis>
                 <Tooltip />
               </LineChart>
@@ -199,10 +204,11 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                   domain={["dataMin", "dataMax"]}
                   type="number"
                 >                
-                <Label value="Timestamp" offset={0} position="insideBottom" />
+                <Label value="Timestamp" offset={-3} position="insideBottom"  fill="#c4c1c1"
+ />
                 </XAxis>
                 <YAxis >
-                <Label value="NO2" offset={10} angle={-90} position="insideLeft" />
+                <Label value="NO2" offset={10} angle={-90} position="insideLeft"  fill="#c4c1c1" />
                   </YAxis>
                 <Tooltip />
               </LineChart>
