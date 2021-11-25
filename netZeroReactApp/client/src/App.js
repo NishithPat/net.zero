@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-
-import UserComponent from "./components/UserComponent";
+import React from "react";
+import MainContainer from "./containers/MainContainer";
 
 import "./App.css";
 
@@ -9,7 +8,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <UserComponent></UserComponent>
+      <MainContainer/>
       </div>
     </>
   )
