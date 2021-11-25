@@ -25,6 +25,7 @@ function UserComponent() {
     const [dataArray, setDataArray] = useState(undefined);
 
     const [locationData, setLocationData] = useState(undefined);
+    const [showlocationData, setShowLocationData] = useState(false);
 
     const connectToWallet = async () => {
         try {
@@ -92,9 +93,7 @@ function UserComponent() {
 
     const listenMMAccount = async (web3Obj) => {
         window.ethereum.on("accountsChanged", async () => {
-            // Time to reload your interface with accounts[0]!
             const accountsInstance = await web3Obj.eth.getAccounts();
-            // accounts = await web3.eth.getAccounts();
             console.log(accountsInstance);
             setAccounts(accountsInstance);
 
@@ -197,11 +196,13 @@ function UserComponent() {
                     });
             });
 
+        setShowLocationData(false);
     }
 
     const gettingPastDayEvents = async () => {
         const latestBlock = await web3.eth.getBlockNumber();
         console.log(latestBlock);
+        setPollutionDataArray(undefined);
 
         const returnCoordinateValuesFromPastEvents = [];
         contract.getPastEvents("coordinatesAndAddress", { fromBlock: latestBlock - 6000, toBlock: latestBlock, filter: { requester_: accounts[0] } })
@@ -242,13 +243,14 @@ function UserComponent() {
                         setPollutionDataArray(returnCoordinateValuesFromPastEvents);
                     });
             });
-
+        setShowLocationData(false);
     }
 
     const gettingDataOfALocation = async () => {
         const locationArray = dataArray.filter(ele => ele.lat === lat && ele.lon === lon);
         setLocationData(locationArray);
         setPollutionDataArray(locationArray);
+        setShowLocationData(true);
     }
 
     return (
@@ -278,13 +280,14 @@ function UserComponent() {
                     <button onClick={gettingPastDayEvents}>Get Events(last 24 hours)</button>
                     {dataArray && <button onClick={gettingDataOfALocation}>Pollution data of given coordinate</button>}
                     <div>
-                        <div className="DataPlots">
+                        {showlocationData && <p>green house gases are measured in micro grams per cubic meter of air</p>}
+                        {showlocationData && <div className="DataPlots">
                             {locationData && <AQIPlot locationData={locationData} />}
                             {locationData && <NO2Plot locationData={locationData} />}
                             {locationData && <O3Plot locationData={locationData} />}
                             {locationData && <PM10Plot locationData={locationData} />}
                             {locationData && <PM2_5Plot locationData={locationData} />}
-                        </div>
+                        </div>}
                         <hr />
                         {pollutionDataArray && pollutionDataArray.map(arr => {
                             return (
