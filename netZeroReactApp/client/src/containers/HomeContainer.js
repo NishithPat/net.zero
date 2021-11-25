@@ -27,13 +27,13 @@ export default function HomeContainer() {
     <div>
       <Container fluid>
         <Row>
-          <Col xs={12} md={8}>
+          <Col xs={7}>
             <MapComponent
               parentCallback={callbackMarkers}
               pollution={pollutionData}
             />
           </Col>
-          <Col xs={6} md={4}>
+          <Col xs={5}>
             <WeatherComponent
               markers={markers}
               parentCallbackLogin={callBackLogin}
