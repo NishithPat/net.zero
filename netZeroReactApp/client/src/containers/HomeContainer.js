@@ -3,8 +3,14 @@ import { Container, Row, Col } from "react-bootstrap";
 import MapComponent from "../components/MapComponent";
 import WeatherComponent from "../components/WeatherComponent";
 // import { Navigate } from "react-router-dom";
-import {Fragment} from 'react';
-import {BrowserRouter as Router, Route, Routes, Switch, Redirect} from 'react-router-dom';
+import { Fragment } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
 export default function HomeContainer() {
   const [markers, setMarkers] = useState([]);
@@ -21,12 +27,13 @@ export default function HomeContainer() {
 
   if (login == false) {
     return <Redirect to="/user" />;
-  } 
-  
+  }
+
   return (
     <div>
       <Container fluid>
         <Row>
+         <h1>netZero</h1>
           <Col xs={7}>
             <MapComponent
               parentCallback={callbackMarkers}

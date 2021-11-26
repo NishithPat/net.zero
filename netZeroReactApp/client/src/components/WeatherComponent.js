@@ -115,7 +115,9 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
           <main className="weather-box">
             <div className="city-info">
               <Row>
+              <Col>
                 <h3> {location} </h3>
+              </Col>
               </Row>
               <Row>
                 <Col>
@@ -178,7 +180,7 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
               <LineChart
                 id="chart1"
                 width={300}
-                height={300}
+                height={500}
                 data={pollution.list}
                 margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
               >
@@ -187,6 +189,31 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                   dataKey="components.co"
                   stroke="#8884d8"
                 />
+
+                <Line
+                  type="monotone"
+                  dataKey="components.nh3"
+                  stroke="#b284d8"
+                />  
+
+                <Line
+                  type="monotone"
+                  dataKey="components.no"
+                  stroke="#84d888"
+                />
+                
+                <Line
+                  type="monotone"
+                  dataKey="components.no2"
+                  stroke="#d4d884"
+                />
+
+                <Line
+                  type="monotone"
+                  dataKey="components.so2"
+                  stroke="#d88884"
+                />
+
                 <CartesianGrid stroke="#ccc" />
 
                 <XAxis
@@ -203,7 +230,7 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                 </XAxis>
                 <YAxis>
                   <Label
-                    value="CO"
+                    value="Pollution"
                     offset={10}
                     angle={-90}
                     position="insideLeft"
@@ -215,7 +242,7 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
               <LineChart
                 id="chart2"
                 width={300}
-                height={300}
+                height={500}
                 data={pollution.list}
                 margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
               >
@@ -235,7 +262,7 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                 </XAxis>
                 <YAxis>
                   <Label
-                    value="NO2"
+                    value="Air Quality"
                     offset={10}
                     angle={-90}
                     position="insideLeft"
@@ -244,15 +271,6 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                 </YAxis>
                 <Tooltip />
               </LineChart>
-
-              {/* <CartesianGrid stroke="#ccc" />
-            <XAxis dataKey="timestamp">
-                <Label value="Timestamp" offset={0} position="insideBottom" />
-            </XAxis>
-            <YAxis >
-                <Label value="NO2" offset={10} angle={-90} position="insideLeft" />
-            </YAxis>
-            <Tooltip /> */}
             </div>
           </main>
         </div>

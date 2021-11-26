@@ -16,7 +16,7 @@ import mapStyles from "../mapStyles";
 
 const libraries = ["places"];
 const mapContainerStyle = {
-  height: "40em",
+  height: "50em",
   width: "45em",
 };
 //custom options of google map
@@ -111,8 +111,6 @@ export default function MapComponent({ parentCallback }) {
 
   return (
     <div>
-      <h1>netZero</h1>
-
       <SearchComponent panTo={panTo} />
 
       <GoogleMap
