@@ -9,10 +9,10 @@ function PM10Plot({ locationData }) {
             <Line type="monotone" dataKey="pm10" stroke="#8884d8" />
             <CartesianGrid stroke="#ccc" />
             <XAxis dataKey="timestamp">
-                <Label value="Timestamp" offset={0} position="insideBottom" />
+                <Label value="Timestamp" offset={0} position="insideBottom" fill="#c4c1c1"/>
             </XAxis>
             <YAxis >
-                <Label value="PM10" offset={10} angle={-90} position="insideLeft" />
+                <Label value="PM10" offset={10} angle={-90} position="insideLeft" fill="#c4c1c1"/>
             </YAxis>
             <Tooltip />
         </LineChart>

@@ -130,7 +130,7 @@ export default function MapComponent({ parentCallback }) {
             onClick={() => {
               setSelected(marker);
               sendData();
-            }}  
+            }}
           />
         ))}
 
@@ -145,9 +145,8 @@ export default function MapComponent({ parentCallback }) {
               <h4 onChange={displayLocation(selected.lat, selected.lng)}>
                 {location}
               </h4>
-              <p>latitude: {selected.lat}</p>
-              <p>longitude: {selected.lng}</p>
-
+              <div className="latitude">Latitude:{selected.lat} </div>
+              <div className="longitude">Longitude:{selected.lng} </div>
               <p>As in {formatRelative(selected.time, new Date())}</p>
               <button onClick={getPollution}>Get pollution</button>
               {typeof pollution.list != "undefined" &&

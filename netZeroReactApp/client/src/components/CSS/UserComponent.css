@@ -4,3 +4,44 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
+
+.App {
+  /* text-align: center; */
+  overflow-x: hidden;
+  padding: 1em;
+  color: #c4c1c1;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+button#request-once {
+  float: left;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  margin-right: 1em;
+}
+
+/* * {
+  color: #c4c1c1;
+} */
