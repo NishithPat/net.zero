@@ -9,6 +9,7 @@ import {
 
 import SearchComponent from "./SearchComponent";
 import { formatRelative } from "date-fns";
+import { Button } from "react-bootstrap";
 
 import "@reach/combobox/styles.css";
 import mapStyles from "../mapStyles";
@@ -148,7 +149,7 @@ export default function MapComponent({ parentCallback }) {
               <div className="latitude">Latitude:{selected.lat} </div>
               <div className="longitude">Longitude:{selected.lng} </div>
               <p>As in {formatRelative(selected.time, new Date())}</p>
-              <button onClick={getPollution}>Get pollution</button>
+              <Button variant="outline-primary" size="sm" onClick={getPollution}>Get pollution</Button>
               {typeof pollution.list != "undefined" &&
               pollution.list.length === 1 ? (
                 <div>

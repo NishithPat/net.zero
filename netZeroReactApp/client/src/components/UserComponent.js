@@ -292,7 +292,7 @@ function UserComponent() {
 
   return (
     <Container fluid>
-      <div className="App">
+      <div className="user-component">
         {!connected && (
           <Button id="login" onClick={connectToWallet}>
             Connect
