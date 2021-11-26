@@ -1,5 +1,5 @@
 .DataPlots {
-  padding-top: 25px;
+  padding: 25px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
@@ -68,3 +68,11 @@ table td,
 /* * {
   color: #c4c1c1;
 } */
+
+hr {
+  margin: auto;
+  display: block;
+  overflow: hidden;
+  border-style: inset;
+  border-width: 1px;
+}

@@ -5,7 +5,7 @@ function PM10Plot({ locationData }) {
     console.log(locationData);
 
     return (
-        <LineChart width={400} height={400} data={locationData}>
+        <LineChart width={300} height={400} data={locationData}>
             <Line type="monotone" dataKey="pm10" stroke="#8884d8" />
             <CartesianGrid stroke="#ccc" />
             <XAxis dataKey="timestamp">

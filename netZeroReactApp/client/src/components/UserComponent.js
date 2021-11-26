@@ -346,23 +346,22 @@ function UserComponent() {
             <div className="account-box">
               <div>
                 {connected && (
-                  <p>
+                  <small>
                     <b>Account:</b> {accounts[0]}
-                  </p>
+                  </small>
                 )}
               </div>
               <div>
                 {connected && (
-                  <p>
+                  <small>
                     {" "}
                     <b>Deployed contract:</b> {contract._address}
-                  </p>
+                  </small>
                 )}
               </div>
             </div>
           </Col>
         </Row>
-
         <Row>
           {connected && (
             <div>
@@ -376,13 +375,14 @@ function UserComponent() {
                   </Button>
                   {dataArray && (
                     <Button onClick={gettingDataOfALocation}>
-                      Pollution data of given coordinate
+                      Pollution gragh of given coordinate
                     </Button>
                   )}
-                  <div>
+                  <div> 
                     {showlocationData && (
                       <p>
-                        green house gases are measured in micro grams per cubic
+                        <hr id= "line"></hr>
+                        Green house gases are measured in micro grams per cubic
                         meter of air
                       </p>
                     )}
@@ -405,7 +405,6 @@ function UserComponent() {
                     )}
                   </div>
                 </Col>
-
                 <Col className="pollution-data">
                   <table className="table">
                     <thead>
