@@ -1,9 +1,9 @@
 .DataPlots {
-    padding-top: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-  }
+  padding-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
 
 .user-component {
   /* text-align: center; */
@@ -42,6 +42,29 @@ button#request-once {
   margin-right: 1em;
 }
 
+.input-box {
+  padding: 10px;
+}
+
+label {
+  margin-right: 1em;
+  display: inline-block;
+  width: 150px;
+  text-align: right;
+}
+
+.submit-button {
+  display: -webkit-inline-box;
+  margin-left: 100px;
+}
+
+table td,
+.table th {
+  padding: 0.75 rem;
+  vertical-align: top;
+  border-top: 1 px solid #c4c1c1;
+  color: #c4c1c1;
+}
 /* * {
   color: #c4c1c1;
 } */
