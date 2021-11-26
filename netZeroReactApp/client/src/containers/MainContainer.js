@@ -8,8 +8,8 @@ export default function MainContainer() {
     <Router>
       <div>
         <Switch>
-          <Route path="/user" component={UserCompontent} />
-          <Route path="/" component={HomeContainer} />
+          <Route exact path="/user" component={UserCompontent} />
+          <Route exact path="/" component={HomeContainer} />
         </Switch>
       </div>
     </Router>

@@ -6,9 +6,6 @@ import WeatherComponent from "../components/WeatherComponent";
 import { Fragment } from "react";
 import {
   BrowserRouter as Router,
-  Route,
-  Routes,
-  Switch,
   Redirect,
 } from "react-router-dom";
 

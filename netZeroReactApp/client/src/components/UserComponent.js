@@ -9,10 +9,12 @@ import O3Plot from "./plots/O3Plot";
 import PM10Plot from "./plots/PM10Plot";
 import PM2_5Plot from "./plots/PM2_5Plot";
 import { Container, Row, Col, Button, table } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 import "./CSS/UserComponent.css";
 
 function UserComponent() {
+  const history = useHistory();
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [contract, setContract] = useState([]);
@@ -290,7 +292,9 @@ function UserComponent() {
     setShowLocationData(true);
   };
 
-  const goBackToHomePage = async () => {};
+  const goBackToHomePage = () => {
+    history.push("/");
+  };
 
   return (
     <Container fluid>
@@ -378,10 +382,10 @@ function UserComponent() {
                       Pollution gragh of given coordinate
                     </Button>
                   )}
-                  <div> 
+                  <div>
                     {showlocationData && (
                       <p>
-                        <hr id= "line"></hr>
+                        <hr id="line"></hr>
                         Green house gases are measured in micro grams per cubic
                         meter of air
                       </p>
