@@ -299,14 +299,20 @@ function UserComponent() {
   return (
     <Container fluid>
       <div className="user-component">
-        <Button variant="secondary" id="logout" onClick={goBackToHomePage}>
-          Logout
-        </Button>
+        <Row>
+          <h1>netZero</h1>   
+        <Col className = "buttons">
+          <Button variant="secondary" id="logout" onClick={goBackToHomePage}>
+            Logout
+          </Button>
         {!connected && (
-          <Button id="login" onClick={connectToWallet}>
+          <Button id="connect" onClick={connectToWallet}>
             Connect
           </Button>
         )}
+        </Col>
+        </Row>
+
         <Row>
           <Col>
             {connected && (

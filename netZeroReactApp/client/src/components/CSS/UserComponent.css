@@ -77,3 +77,12 @@ hr {
   border-style: inset;
   border-width: 1px;
 }
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button#logout {
+  margin-right: 1em;
+}
