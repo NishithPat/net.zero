@@ -270,7 +270,6 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
                   <XAxis
                     dataKey="dt"
                     domain={["dataMin", "dataMax"]}
-                    type="number"
                   >
                     <Label
                       value="CO"
