@@ -402,9 +402,6 @@ function UserComponent() {
                         {locationData && (
                           <PM10Plot locationData={locationData} />
                         )}
-                        {locationData && (
-                          <PM2_5Plot locationData={locationData} />
-                        )}
                       </div>
                     )}
                   </div>
