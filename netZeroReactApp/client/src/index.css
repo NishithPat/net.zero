@@ -21,6 +21,7 @@ code {
 }
 
 h1 {
+  size: 3rem;
   position: absolute;
   top: 1rem;
   left: 1rem;

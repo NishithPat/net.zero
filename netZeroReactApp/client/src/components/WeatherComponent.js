@@ -4,7 +4,6 @@ import {
   LineChart,
   Line,
   XAxis,
-  YAxis,
   Tooltip,
   Label,
   CartesianGrid,
@@ -12,8 +11,6 @@ import {
 import Geocode from "react-geocode";
 import Button from "react-bootstrap/Button";
 import { Container, Row, Col } from "react-bootstrap";
-import moment from "moment";
-const { DateTime } = require("luxon");
 
 // import * as d3 from 'd3';
 
@@ -37,13 +34,15 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
   function displayLocation(latitude, longitude) {
     Geocode.setApiKey("AIzaSyCouekgXHz8Yzs4OS2wsGNWBT6lzF3YXu0");
     Geocode.fromLatLng(latitude, longitude).then((response) => {
-      const city = response.results[0].address_components[1].long_name;
-      console.log(city);
-      getWeather(city);
-      setLocation(city);
+      const checkCity = response.results[0];
+      if (typeof checkCity.address_components[1] === "undefined") {
+        window.alert("Location is not valid for search");
+      } else {
+        const city = response.results[0].address_components[1].long_name;
+        getWeather(city);
+        setLocation(city);
+      }
     });
-    console.log("query");
-    console.log(setQuery);
   }
 
   function getWeather(query) {
@@ -195,14 +194,20 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
 
                   <Line
                     type="monotone"
-                    dataKey="components.no2"
+                    dataKey="components.pm10"
                     stroke="#d4d884"
                   />
 
                   <Line
                     type="monotone"
-                    dataKey="components.so2"
+                    dataKey="components.pm2_5"
                     stroke="#d88884"
+                  />
+
+                  <Line
+                    type="monotone"
+                    dataKey="components.o3"
+                    stroke="#c4c1c1"
                   />
 
                   <CartesianGrid stroke="#ccc" />
