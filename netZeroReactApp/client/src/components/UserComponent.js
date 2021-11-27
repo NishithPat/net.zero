@@ -8,11 +8,13 @@ import NO2Plot from "./plots/NO2Plot";
 import O3Plot from "./plots/O3Plot";
 import PM10Plot from "./plots/PM10Plot";
 import PM2_5Plot from "./plots/PM2_5Plot";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, table } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 import "./CSS/UserComponent.css";
 
 function UserComponent() {
+  const history = useHistory();
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [contract, setContract] = useState([]);
@@ -290,9 +292,16 @@ function UserComponent() {
     setShowLocationData(true);
   };
 
+  const goBackToHomePage = () => {
+    history.push("/");
+  };
+
   return (
     <Container fluid>
       <div className="user-component">
+        <Button variant="secondary" id="logout" onClick={goBackToHomePage}>
+          Logout
+        </Button>
         {!connected && (
           <Button id="login" onClick={connectToWallet}>
             Connect
@@ -307,6 +316,7 @@ function UserComponent() {
                   id="lattitude"
                   value={lat}
                   onChange={lattitudeFunction}
+                  placeholder="Lattitude"
                 />
                 <br></br>
                 <label htmlFor="longitude">Longitude</label>
@@ -314,17 +324,22 @@ function UserComponent() {
                   id="longitude"
                   value={lon}
                   onChange={longitudeFunction}
+                  placeholder="Longitude"
                 />
-                <form onSubmit={RequestFunction}>
-                  <Button id="request-once" type="submit">
-                    request once
-                  </Button>
-                </form>
-                <form onSubmit={RequestAndTrackFunction}>
-                  <Button id="request-track" type="submit">
-                    request and track
-                  </Button>
-                </form>
+                <Row>
+                  <div className="submit-button">
+                    <form onSubmit={RequestFunction}>
+                      <Button id="request-once" type="submit">
+                        request once
+                      </Button>
+                    </form>
+                    <form onSubmit={RequestAndTrackFunction}>
+                      <Button id="request-track" type="submit">
+                        request and track
+                      </Button>
+                    </form>
+                  </div>
+                </Row>
               </div>
             )}
             <b>{loading && "...loading"}</b>
@@ -335,64 +350,105 @@ function UserComponent() {
             <div className="account-box">
               <div>
                 {connected && (
-                  <p>
+                  <small>
                     <b>Account:</b> {accounts[0]}
-                  </p>
+                  </small>
                 )}
               </div>
               <div>
                 {connected && (
-                  <p>
+                  <small>
                     {" "}
                     <b>Deployed contract:</b> {contract._address}
-                  </p>
+                  </small>
                 )}
               </div>
             </div>
           </Col>
         </Row>
-        {connected && (
-          <div>
-            <Button onClick={gettingPastEvents}>Get All Past Events</Button>
-            <Button onClick={gettingPastDayEvents}>
-              Get Events(last 24 hours)
-            </Button>
-            {dataArray && (
-              <Button onClick={gettingDataOfALocation}>
-                Pollution data of given coordinate
-              </Button>
-            )}
+        <Row>
+          {connected && (
             <div>
-              {showlocationData && (
-                <p>
-                  green house gases are measured in micro grams per cubic meter
-                  of air
-                </p>
-              )}
-              {showlocationData && (
-                <div className="DataPlots">
-                  {locationData && <AQIPlot locationData={locationData} />}
-                  {locationData && <NO2Plot locationData={locationData} />}
-                  {locationData && <O3Plot locationData={locationData} />}
-                  {locationData && <PM10Plot locationData={locationData} />}
-                  {locationData && <PM2_5Plot locationData={locationData} />}
-                </div>
-              )}
-              <hr />
-              {pollutionDataArray &&
-                pollutionDataArray.map((arr) => {
-                  return (
-                    <div key={uuid()}>
-                      lat = {arr.lat}; lon = {arr.lon}; timestamp ={" "}
-                      {arr.timestamp.toString()}; aqi level = {arr.aqi}; no2
-                      level = {arr.no2}; o3 level = {arr.o3}; pm10 level ={" "}
-                      {arr.pm10}; pm2_5 level = {arr.pm2_5};
-                    </div>
-                  );
-                })}
+              <div>
+                <Col className="pollution-gragh">
+                  <Button onClick={gettingPastEvents}>
+                    Get All Past Events
+                  </Button>
+                  <Button onClick={gettingPastDayEvents}>
+                    Get Events(last 24 hours)
+                  </Button>
+                  {dataArray && (
+                    <Button onClick={gettingDataOfALocation}>
+                      Pollution gragh of given coordinate
+                    </Button>
+                  )}
+                  <div>
+                    {showlocationData && (
+                      <p>
+                        <hr id="line"></hr>
+                        Green house gases are measured in micro grams per cubic
+                        meter of air
+                      </p>
+                    )}
+                    {showlocationData && (
+                      <div className="DataPlots">
+                        {locationData && (
+                          <AQIPlot locationData={locationData} />
+                        )}
+                        {locationData && (
+                          <NO2Plot locationData={locationData} />
+                        )}
+                        {locationData && <O3Plot locationData={locationData} />}
+                        {locationData && (
+                          <PM10Plot locationData={locationData} />
+                        )}
+                        {locationData && (
+                          <PM2_5Plot locationData={locationData} />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Col>
+                <Col className="pollution-data">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Entry</th>
+                        <th scope="col">Lattitude</th>
+                        <th scope="col">Longitude</th>
+                        <th scope="col">Datetime</th>
+                        <th scope="col">Aqi</th>
+                        <th scope="col">No2</th>
+                        <th scope="col">O3</th>
+                        <th scope="col">PM10</th>
+                        <th scope="col">PM2.5</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pollutionDataArray &&
+                        pollutionDataArray.map((arr, i) => {
+                          console.log(pollutionDataArray);
+                          return (
+                            <tr key={uuid()}>
+                              <th scope="row">{i + 1}</th>
+                              <td>lat: {arr.lat}</td>
+                              <td>lon: {arr.lon}</td>
+                              <td>{arr.timestamp.toString()}</td>
+                              <td>{arr.aqi}</td>
+                              <td>{arr.no2}</td>
+                              <td>{arr.o3}</td>
+                              <td>{arr.pm10}</td>
+                              <td>{arr.pm2_5}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </Col>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </Row>
       </div>
     </Container>
   );
