@@ -16,7 +16,7 @@ import mapStyles from "../mapStyles";
 
 const libraries = ["places"];
 const mapContainerStyle = {
-  height: "50em",
+  height: "45em",
   width: "45em",
 };
 //custom options of google map
@@ -68,7 +68,7 @@ export default function MapComponent({ parentCallback }) {
 
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
-    mapRef.current.setZoom(14);
+    mapRef.current.setZoom(10);
   }, []);
 
   const [location, setLocation] = React.useState(null);

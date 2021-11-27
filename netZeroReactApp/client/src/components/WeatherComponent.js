@@ -33,10 +33,6 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
   const [login, setLogin] = useState(false);
   const startDateTimestamp = (startDate / 1000) | 0;
   const endDateTimestamp = (endDate / 1000) | 0;
-  const [errorMessage, setErrorMessage] = useState("");
-
-  console.log("markers");
-  console.log(markers);
 
   function displayLocation(latitude, longitude) {
     Geocode.setApiKey("AIzaSyCouekgXHz8Yzs4OS2wsGNWBT6lzF3YXu0");
@@ -115,9 +111,9 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
           <main className="weather-box">
             <div className="city-info">
               <Row>
-              <Col>
-                <h3> {location} </h3>
-              </Col>
+                <Col>
+                  <h3 onChange={displayLocation}> {location} </h3>
+                </Col>
               </Row>
               <Row>
                 <Col>
@@ -177,100 +173,110 @@ function WeatherComponent({ markers, parentCallbackLogin }) {
             </div>
 
             <div className="charts">
-              <LineChart
-                id="chart1"
-                width={300}
-                height={500}
-                data={pollution.list}
-                margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-              >
-                <Line
-                  type="monotone"
-                  dataKey="components.co"
-                  stroke="#8884d8"
-                />
-
-                <Line
-                  type="monotone"
-                  dataKey="components.nh3"
-                  stroke="#b284d8"
-                />  
-
-                <Line
-                  type="monotone"
-                  dataKey="components.no"
-                  stroke="#84d888"
-                />
-                
-                <Line
-                  type="monotone"
-                  dataKey="components.no2"
-                  stroke="#d4d884"
-                />
-
-                <Line
-                  type="monotone"
-                  dataKey="components.so2"
-                  stroke="#d88884"
-                />
-
-                <CartesianGrid stroke="#ccc" />
-
-                <XAxis
-                  dataKey="dt"
-                  domain={["dataMin", "dataMax"]}
-                  type="number"
+              <Row>
+                <LineChart
+                  id="chart1"
+                  width={600}
+                  height={300}
+                  data={pollution.list}
+                  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
                 >
-                  <Label
-                    value="Timestamp"
-                    offset={-3}
-                    position="insideBottom"
-                    fill="#c4c1c1"
+                  <Line
+                    type="monotone"
+                    dataKey="components.nh3"
+                    stroke="#b284d8"
                   />
-                </XAxis>
-                <YAxis>
-                  <Label
-                    value="Pollution"
-                    offset={10}
-                    angle={-90}
-                    position="insideLeft"
-                    fill="#c4c1c1"
+
+                  <Line
+                    type="monotone"
+                    dataKey="components.no"
+                    stroke="#84d888"
                   />
-                </YAxis>
-                <Tooltip />
-              </LineChart>
-              <LineChart
-                id="chart2"
-                width={300}
-                height={500}
-                data={pollution.list}
-                margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-              >
-                <Line type="monotone" dataKey="main.aqi" stroke="#8884d8" />
-                <CartesianGrid stroke="#ccc" />
-                <XAxis
-                  dataKey="dt"
-                  domain={["dataMin", "dataMax"]}
-                  type="number"
+
+                  <Line
+                    type="monotone"
+                    dataKey="components.no2"
+                    stroke="#d4d884"
+                  />
+
+                  <Line
+                    type="monotone"
+                    dataKey="components.so2"
+                    stroke="#d88884"
+                  />
+
+                  <CartesianGrid stroke="#ccc" />
+
+                  <XAxis
+                    dataKey="dt"
+                    domain={["dataMin", "dataMax"]}
+                    type="number"
+                  >
+                    <Label
+                      value="Pollution"
+                      offset={-3}
+                      position="insideBottom"
+                      fill="#c4c1c1"
+                    />
+                  </XAxis>
+
+                  <Tooltip />
+                </LineChart>
+              </Row>
+
+              <Row>
+                <LineChart
+                  id="chart2"
+                  width={300}
+                  height={300}
+                  data={pollution.list}
+                  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
                 >
-                  <Label
-                    value="Timestamp"
-                    offset={-3}
-                    position="insideBottom"
-                    fill="#c4c1c1"
+                  <Line type="monotone" dataKey="main.aqi" stroke="#8884d8" />
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis
+                    dataKey="dt"
+                    domain={["dataMin", "dataMax"]}
+                    type="number"
+                  >
+                    <Label
+                      value="Air Quality"
+                      offset={-3}
+                      position="insideBottom"
+                      fill="#c4c1c1"
+                    />
+                  </XAxis>
+                  <Tooltip />
+                </LineChart>
+
+                <LineChart
+                  id="chart3"
+                  width={300}
+                  height={300}
+                  data={pollution.list}
+                  margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+                >
+                  <Line
+                    type="monotone"
+                    dataKey="components.co"
+                    stroke="#8884d8"
                   />
-                </XAxis>
-                <YAxis>
-                  <Label
-                    value="Air Quality"
-                    offset={10}
-                    angle={-90}
-                    position="insideLeft"
-                    fill="#c4c1c1"
-                  />
-                </YAxis>
-                <Tooltip />
-              </LineChart>
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis
+                    dataKey="dt"
+                    domain={["dataMin", "dataMax"]}
+                    type="number"
+                  >
+                    <Label
+                      value="CO"
+                      offset={-3}
+                      position="insideBottom"
+                      fill="#c4c1c1"
+                    />
+                  </XAxis>
+                  <Tooltip />
+                </LineChart>
+              </Row>
             </div>
           </main>
         </div>

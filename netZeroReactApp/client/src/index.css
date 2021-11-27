@@ -80,8 +80,6 @@ svg.react-date-picker__calendar-button__icon.react-date-picker__button__icon {
   stroke: antiquewhite;
 }
 .charts {
-  margin-left: -4em!important;
-  display: flex;
   justify-content: space-between;
 }
 
