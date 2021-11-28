@@ -24,12 +24,30 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
     mapping(bytes32 => string) public toLat;
     mapping(bytes32 => string) public toLon;
 
+    event RequestMultipleFulfilled(
+        bytes32 requestId_,
+        uint256 aqi_,
+        uint256 no2_,
+        uint256 o3_,
+        uint256 pm10_,
+        uint256 pm2_5_,
+        address indexed requester_
+    );
+
+    event coordinatesAndAddress(
+        bytes32 requestId_,
+        string lat_,
+        string lon_,
+        uint256 timestamp_,
+        address indexed requester_
+    );
+
     constructor() {
         setPublicChainlinkToken();
         oracle = 0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10;
         jobId = "c7ef2e55f68e45b4b98219b8f2854189";
         fee = 0;
-        interval = 1 minutes; //needs to change
+        interval = 5 minutes; //needs to change
         lastTimeStamp = block.timestamp;
     }
 
@@ -76,13 +94,6 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         public
         returns (bytes32 requestId)
     {
-        //logic problem in conditional
-        // if (counter >= creatorArray.length) {
-        //     counter = 0;
-        // } else {
-        //     counter = counter + 1;
-        // }
-
         Chainlink.Request memory req = buildChainlinkRequest(
             jobId,
             address(this),
@@ -121,24 +132,6 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         toAddresses[requestId] = _sender;
     }
 
-    event RequestMultipleFulfilled(
-        bytes32 requestId_,
-        uint256 aqi_,
-        uint256 no2_,
-        uint256 o3_,
-        uint256 pm10_,
-        uint256 pm2_5_,
-        address indexed requester_
-    );
-
-    event coordinatesAndAddress(
-        bytes32 requestId_,
-        string lat_,
-        string lon_,
-        uint256 timestamp_,
-        address indexed requester_
-    );
-
     function fulfillMultipleParameters(
         bytes32 requestId,
         uint256 aqi_response,
@@ -165,7 +158,7 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
         );
 
         //GTAX minted on some condition
-        //if(no2 > 200) { mint gtax}
+        //if(no2_response > 200) { mint gtax}
 
         counter = counter + 1;
     }
