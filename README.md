@@ -26,16 +26,4 @@ To build a path to net zero. A mechanism for corrective action that sets us on p
 The challenged is to do this in the most cost efficient, decentralised and impactful way(UX). 
 
 
-**A green economy is an economy that aims at reducing environmental risks and ecological scarcities, and that aims for sustainable development without degrading the environment. 
-
-## What it does
-
-## How we built it
-
-## Challenges we ran into
-
-## Accomplishments that we're proud of
-
-## What we learned
-
-## What's next for net.zero
+**A green economy is an economy that aims at reducing environmental risks and ecological scarcities, and that aims for sustainable development without degrading the environment.
