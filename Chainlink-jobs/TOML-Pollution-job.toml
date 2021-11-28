@@ -1,0 +1,64 @@
+type = "directrequest"
+schemaVersion = 1
+name = "TOML-Multiple-response-o3-co-operator"
+contractAddress = "0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10"
+minContractPaymentLinkJuels = "0"
+maxTaskDuration = "0s"
+observationSource = """
+    decode_log   [type="ethabidecodelog"
+                  abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
+                  data="$(jobRun.logData)"
+                  topics="$(jobRun.logTopics)"]
+    decode_cbor  [type="cborparse" data="$(decode_log.data)"]
+
+    decode_log -> decode_cbor
+
+    decode_cbor -> aqi
+    decode_cbor -> no2
+    decode_cbor -> o3
+    decode_cbor -> pm10
+    decode_cbor -> pm2_5
+
+    aqi         [type="bridge" name="openweather-pollution-ea-kovan" requestData="{\\"data\\": {\\"lat\\": $(decode_cbor.lat), \\"lon\\": $(decode_cbor.lon)}}"]
+    aqi_parse    [type=jsonparse path="data,result" data="$(aqi)"]
+    aqi -> aqi_parse   
+
+    no2         [type="bridge" name="openweather-pollution-ea-kovan" requestData="{\\"data\\": {\\"lat\\": $(decode_cbor.lat), \\"lon\\": $(decode_cbor.lon)}}"]
+    no2_parse    [type=jsonparse path="data,list,0,components,no2" data="$(no2)"]
+    no2_multiply [type="multiply" input="$(no2_parse)" times=100000000]
+    no2 -> no2_parse -> no2_multiply
+
+    o3          [type="bridge" name="openweather-pollution-ea-kovan" requestData="{\\"data\\": {\\"lat\\": $(decode_cbor.lat), \\"lon\\": $(decode_cbor.lon)}}"]
+    o3_parse    [type=jsonparse path="data,list,0,components,o3" data="$(o3)"]
+    o3_multiply [type="multiply" input="$(o3_parse)" times=100000000]
+    o3 -> o3_parse -> o3_multiply
+
+    pm10          [type="bridge" name="openweather-pollution-ea-kovan" requestData="{\\"data\\": {\\"lat\\": $(decode_cbor.lat), \\"lon\\": $(decode_cbor.lon)}}"]
+    pm10_parse    [type=jsonparse path="data,list,0,components,pm10" data="$(pm10)"]
+    pm10_multiply [type="multiply" input="$(pm10_parse)" times=100000000]
+    pm10 -> pm10_parse -> pm10_multiply
+
+    pm2_5         [type="bridge" name="openweather-pollution-ea-kovan" requestData="{\\"data\\": {\\"lat\\": $(decode_cbor.lat), \\"lon\\": $(decode_cbor.lon)}}"]
+    pm2_5_parse    [type=jsonparse path="data,list,0,components,pm2_5" data="$(pm2_5)"]
+    pm2_5_multiply [type="multiply" input="$(pm2_5_parse)" times=100000000]
+    pm2_5 -> pm2_5_parse -> pm2_5_multiply
+
+    aqi_parse ->encode_mwr
+    no2_multiply -> encode_mwr
+    o3_multiply -> encode_mwr
+    pm10_multiply -> encode_mwr
+    pm2_5_multiply -> encode_mwr
+
+    // MWR API does NOT auto populate the requestID.
+    encode_mwr [type="ethabiencode"
+                abi="(bytes32 requestId, uint256 aqi_response, uint256 no2_response, uint256 o3_response, uint256 pm10_response, uint256 pm2_5_response)"
+                data="{\\"requestId\\": $(decode_log.requestId), \\"aqi_response\\": $(aqi_parse), \\"no2_response\\": $(no2_multiply), \\"o3_response\\": $(o3_multiply), \\"pm10_response\\": $(pm10_multiply), \\"pm2_5_response\\": $(pm2_5_multiply)}"
+                ]
+    encode_tx  [type="ethabiencode"
+                abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
+                data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\":   $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_mwr)}"
+                ]
+    submit_tx  [type="ethtx" to="0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10" data="$(encode_tx)" minConfirmations="2"]
+
+    encode_mwr -> encode_tx -> submit_tx
+"""
