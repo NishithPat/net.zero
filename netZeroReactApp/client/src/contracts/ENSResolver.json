@@ -1,0 +1,309 @@
+{
+  "contractName": "ENSResolver",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "node",
+          "type": "bytes32"
+        }
+      ],
+      "name": "addr",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"}],\"name\":\"addr\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol\":\"ENSResolver\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol\":{\"keccak256\":\"0xeed48a6a522c400f024f8725ad931833205cb63cc87285b46c5c0e88ca090352\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c4065aed34d3fae897ac7eb7c5e3af1ba9f458fc31c9f165acae8fa448125ec5\",\"dweb:/ipfs/Qmejzy7Kdw4mHiv5QqyvA8nUU5SeqH6n6dQoe1VEWZUnsi\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nabstract contract ENSResolver {\n  function addr(\n    bytes32 node\n  )\n    public\n    view\n    virtual\n    returns (\n      address\n    );\n}\n",
+  "sourcePath": "@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol",
+  "ast": {
+    "absolutePath": "@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol",
+    "exportedSymbols": {
+      "ENSResolver": [
+        2112
+      ]
+    },
+    "id": 2113,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2104,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:23:11"
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "canonicalName": "ENSResolver",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": false,
+        "id": 2112,
+        "linearizedBaseContracts": [
+          2112
+        ],
+        "name": "ENSResolver",
+        "nameLocation": "75:11:11",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "3b3b57de",
+            "id": 2111,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addr",
+            "nameLocation": "100:4:11",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2107,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2106,
+                  "mutability": "mutable",
+                  "name": "node",
+                  "nameLocation": "118:4:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "110:12:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2105,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "110:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "104:22:11"
+            },
+            "returnParameters": {
+              "id": 2110,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2109,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "179:7:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2108,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "179:7:11",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "171:21:11"
+            },
+            "scope": 2112,
+            "src": "91:102:11",
+            "stateMutability": "view",
+            "virtual": true,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2113,
+        "src": "57:138:11",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:164:11"
+  },
+  "legacyAST": {
+    "absolutePath": "@chainlink/contracts/src/v0.8/vendor/ENSResolver.sol",
+    "exportedSymbols": {
+      "ENSResolver": [
+        2112
+      ]
+    },
+    "id": 2113,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2104,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:23:11"
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "canonicalName": "ENSResolver",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": false,
+        "id": 2112,
+        "linearizedBaseContracts": [
+          2112
+        ],
+        "name": "ENSResolver",
+        "nameLocation": "75:11:11",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "3b3b57de",
+            "id": 2111,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addr",
+            "nameLocation": "100:4:11",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2107,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2106,
+                  "mutability": "mutable",
+                  "name": "node",
+                  "nameLocation": "118:4:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "110:12:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2105,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "110:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "104:22:11"
+            },
+            "returnParameters": {
+              "id": 2110,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2109,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2111,
+                  "src": "179:7:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2108,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "179:7:11",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "171:21:11"
+            },
+            "scope": 2112,
+            "src": "91:102:11",
+            "stateMutability": "view",
+            "virtual": true,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2113,
+        "src": "57:138:11",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:164:11"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.10+commit.fc410830.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-11-28T12:54:08.771Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
