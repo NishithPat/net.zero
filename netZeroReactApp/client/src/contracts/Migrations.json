@@ -1048,7 +1048,7 @@
   "sourceMap": "57:338:12:-:0;;;226:49;;;;;;;;;;258:10;250:5;;:18;;;;;;;;;;;;;;;;;;57:338;;;;;;",
   "deployedSourceMap": "57:338:12:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;109:39;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;83:20;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;281:112;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;109:39;;;;:::o;83:20::-;;;;;;;;;;;;:::o;281:112::-;205:5;;;;;;;;;;191:19;;:10;:19;;;187:26;;;377:9:::1;350:24;:36;;;;187:26:::0;281:112;:::o;7:77:14:-;44:7;73:5;62:16;;7:77;;;:::o;90:118::-;177:24;195:5;177:24;:::i;:::-;172:3;165:37;90:118;;:::o;214:222::-;307:4;345:2;334:9;330:18;322:26;;358:71;426:1;415:9;411:17;402:6;358:71;:::i;:::-;214:222;;;;:::o;442:126::-;479:7;519:42;512:5;508:54;497:65;;442:126;;;:::o;574:96::-;611:7;640:24;658:5;640:24;:::i;:::-;629:35;;574:96;;;:::o;676:118::-;763:24;781:5;763:24;:::i;:::-;758:3;751:37;676:118;;:::o;800:222::-;893:4;931:2;920:9;916:18;908:26;;944:71;1012:1;1001:9;997:17;988:6;944:71;:::i;:::-;800:222;;;;:::o;1109:117::-;1218:1;1215;1208:12;1355:122;1428:24;1446:5;1428:24;:::i;:::-;1421:5;1418:35;1408:63;;1467:1;1464;1457:12;1408:63;1355:122;:::o;1483:139::-;1529:5;1567:6;1554:20;1545:29;;1583:33;1610:5;1583:33;:::i;:::-;1483:139;;;;:::o;1628:329::-;1687:6;1736:2;1724:9;1715:7;1711:23;1707:32;1704:119;;;1742:79;;:::i;:::-;1704:119;1862:1;1887:53;1932:7;1923:6;1912:9;1908:22;1887:53;:::i;:::-;1877:63;;1833:117;1628:329;;;;:::o",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Migrations {\n    address public owner;\n    uint256 public last_completed_migration;\n\n    modifier restricted() {\n        if (msg.sender == owner) _;\n    }\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function setCompleted(uint256 completed) public restricted {\n        last_completed_migration = completed;\n    }\n}\n",
-  "sourcePath": "/Users/np/Desktop/Chainlink hackathon/ChainlinkProject/net.zero/netZeroReactApp/contracts/Migrations.sol",
+  "sourcePath": "/Users/np/Desktop/Chainlink hackathon/forkedNetZero/net.zero/netZeroReactApp/contracts/Migrations.sol",
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -1855,8 +1855,8 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0xFadFe390C47D745090917eB0F7971714C6beb6ba",
-      "transactionHash": "0xaad409c710bbcad5700323882d572e2ba19b11c73393e025096f50c42c3b962a"
+      "address": "0x95d8B527a10D42e02736980Ea17e2c52Ee94193B",
+      "transactionHash": "0xab07664aaddaeb6ebdf720c9a7f3a5afcbc324fc6db7656a5159f94298498444"
     },
     "5777": {
       "events": {},
@@ -1866,7 +1866,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-28T12:58:29.554Z",
+  "updatedAt": "2021-12-03T14:01:17.940Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

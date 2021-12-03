@@ -44,10 +44,10 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
 
     constructor() {
         setPublicChainlinkToken();
-        oracle = 0xd57018342B19Bc74dD6f5Fa8B73c934694b3aC10;
-        jobId = "c7ef2e55f68e45b4b98219b8f2854189";
+        oracle = 0x0f0B6651D8b9DF518915FE0728E7A633dCf17351;
+        jobId = "6f58b95c65154b6798215d33f329c20c";
         fee = 0;
-        interval = 5 minutes; //needs to change
+        interval = 15 minutes; //needs to change
         lastTimeStamp = block.timestamp;
     }
 
@@ -78,6 +78,8 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
     function performUpkeep(
         bytes calldata /* performData */
     ) external override {
+        counter = counter + 1;
+
         lastTimeStamp = block.timestamp;
 
         if (counter >= creatorArray.length) {
@@ -159,8 +161,6 @@ contract PollutionDataContract is ChainlinkClient, KeeperCompatibleInterface {
 
         //GTAX minted on some condition
         //if(no2_response > 200) { mint gtax}
-
-        counter = counter + 1;
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
